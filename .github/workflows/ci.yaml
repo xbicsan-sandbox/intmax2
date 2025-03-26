@@ -16,7 +16,7 @@ env:
 jobs:
   format-check:
     name: fmt
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2204
     steps:
       - uses: actions/checkout@v4
       - name: Install Rust Toolchain
@@ -24,7 +24,7 @@ jobs:
         with:
           toolchain: nightly-2024-09-17
           components: rustfmt
-      - uses: Swatinem/rust-cache@v2
+      - uses: useblacksmith/rust-cache@v3
         with:
           cache-on-failure: true
       - name: cargo fmt
@@ -32,7 +32,7 @@ jobs:
 
   doc:
     name: doc
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2204
     env:
       RUSTDOCFLAGS: "-D warnings"
     steps:
@@ -41,7 +41,7 @@ jobs:
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: nightly-2024-09-17
-      - uses: Swatinem/rust-cache@v2
+      - uses: useblacksmith/rust-cache@v3
         with:
           cache-on-failure: true
       - name: Check docs
@@ -49,7 +49,7 @@ jobs:
 
   typos:
     name: typos
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2204
     steps:
       - uses: actions/checkout@v4
       - name: typos-action
@@ -58,7 +58,7 @@ jobs:
   clippy:
     name: clippy
     needs: format-check
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2204
     steps:
       - uses: actions/checkout@v4
       - name: Install Rust Toolchain
@@ -66,7 +66,7 @@ jobs:
         with:
           toolchain: nightly-2024-09-17
           components: clippy
-      - uses: Swatinem/rust-cache@v2
+      - uses: useblacksmith/rust-cache@v3
         with:
           cache-on-failure: true
       - uses: r7kamura/rust-problem-matchers@v1
@@ -76,7 +76,7 @@ jobs:
   tests:
     name: tests
     needs: clippy
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2204
     services:
       postgres:
         image: postgres:15.8
@@ -97,7 +97,7 @@ jobs:
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: nightly-2024-09-17
-      - uses: Swatinem/rust-cache@v2
+      - uses: useblacksmith/rust-cache@v3
         with:
           cache-on-failure: true
       - uses: taiki-e/install-action@v2
